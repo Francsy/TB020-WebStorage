@@ -49,9 +49,6 @@ titulo.innerHTML = "BASE DE DATOS"
 seccionDatos.appendChild(titulo);
 
 for (let i = 0; i < fichasUsuario.length; i++) {
-
-    
-
     const divDatos = document.createElement("div");
     seccionDatos.appendChild(divDatos);
     const titulo2 = document.createElement("h3");
@@ -66,18 +63,34 @@ for (let i = 0; i < fichasUsuario.length; i++) {
     let imagenDatos = document.createElement("img");
     divDatos.appendChild(imagenDatos);
     imagenDatos.src = `${fichasUsuario[i].imagen}`;
-
-
 }
 
+})
 
+
+// 2. Avanzado - Local Storage
+// Crea botón para borrar todos los contactos guardados en Local Storage
+
+
+const botonDelete = document.querySelector("#delete")
+botonDelete.onclick = ()=> localStorage.clear()
+
+
+// Crea botón para borrar un contacto en concreto de Local Storage.
+
+
+document.querySelector("#deleteForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const user = event.target.delUser.value;
+    let arrayGuardado = JSON.parse(localStorage.getItem("Datos guardados"));
+    for (let i = 0; i < arrayGuardado.length; i++) {
+        if (arrayGuardado[i]["nombre"] === user) {
+            localStorage.removeItem(arrayGuardado[i])
+        }
+    }
 })
 
 
 
 
 
-
-// 2. Avanzado - Local Storage
-// Crea botón para borrar todos los contactos guardados en Local Storage
-// Crea botón para borrar un contacto en concreto de Local Storage.
