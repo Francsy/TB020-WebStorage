@@ -13,10 +13,15 @@
 
 //Guardamos un array vacío en nuestro almacenamiento local
 const arrayDeDatos = [];
-localStorage.setItem("Datos guardados", JSON.stringify(arrayDeDatos))
+localStorage.setItem("datosGuardados", JSON.stringify(arrayDeDatos))
 
+//Ponemos el título la sección donde apareceran los datos 
+const seccionDatos = document.getElementById("datosguardados");
+const titulo = document.createElement("h2");
+titulo.innerHTML = "BASE DE DATOS"
+seccionDatos.appendChild(titulo);
 
-//Cuando apretamos submit, queremos ingresar los datos en la memoria que hemos creado
+//Cuando apretamos submit, ingresamos los nuevos datos en la memoria
 
 document.querySelector("#guarda-datos").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -33,61 +38,55 @@ document.querySelector("#guarda-datos").addEventListener("submit", function (eve
         imagen: image
     }
 
-    let arrayGuardado = JSON.parse(localStorage.getItem("Datos guardados"));
+    let arrayGuardado = JSON.parse(localStorage.getItem("datosGuardados"));
     arrayGuardado.push(nuevosDatos);
-    localStorage.setItem("Datos guardados", JSON.stringify(arrayGuardado));
+    localStorage.setItem("datosGuardados", JSON.stringify(arrayGuardado));
 
 
 //Sacamos el array de los datos guardados
-const fichasUsuario = JSON.parse(localStorage.getItem("Datos guardados"));
+//const fichasUsuario = JSON.parse(localStorage.getItem("datosGuardados"));
 
-//Pintamos el DOM
+//Y añadimos esos nuevos datos al doom (lo hacemos directamente en el propio evento sin recurrir a la memoria)
 
-const seccionDatos = document.getElementById("datosguardados");
-const titulo = document.createElement("h2");
-titulo.innerHTML = "BASE DE DATOS"
-seccionDatos.appendChild(titulo);
-
-for (let i = 0; i < fichasUsuario.length; i++) {
-    const divDatos = document.createElement("div");
-    seccionDatos.appendChild(divDatos);
-    const titulo2 = document.createElement("h3");
-    titulo2.innerHTML = `${i+1} - ${fichasUsuario[i].nombre}`;
-    divDatos.appendChild(titulo2);
-    let parrafoDatos1 = document.createElement("p");
-    divDatos.appendChild(parrafoDatos1);
-    parrafoDatos1.innerHTML = `Email: ${fichasUsuario[i].email}`;
-    let parrafoDatos2 = document.createElement("p");
-    divDatos.appendChild(parrafoDatos2);
-    parrafoDatos2.innerHTML = `Mensaje: ${fichasUsuario[i].mensaje}`;
-    let imagenDatos = document.createElement("img");
-    divDatos.appendChild(imagenDatos);
-    imagenDatos.src = `${fichasUsuario[i].imagen}`;
-}
+const divDatos = document.createElement("div");
+seccionDatos.appendChild(divDatos);
+const titulo2 = document.createElement("h3");
+titulo2.innerHTML = `${nuevosDatos.nombre}`;
+divDatos.appendChild(titulo2);
+let parrafoDatos1 = document.createElement("p");
+divDatos.appendChild(parrafoDatos1);
+parrafoDatos1.innerHTML = `Email: ${nuevosDatos.email}`;
+let parrafoDatos2 = document.createElement("p");
+divDatos.appendChild(parrafoDatos2);
+parrafoDatos2.innerHTML = `Mensaje: ${nuevosDatos.mensaje}`;
+let imagenDatos = document.createElement("img");
+divDatos.appendChild(imagenDatos);
+imagenDatos.src = `${nuevosDatos.imagen}`;
 
 })
-
 
 // 2. Avanzado - Local Storage
 // Crea botón para borrar todos los contactos guardados en Local Storage
 
+//El botón ya está en el html con id "delete":
 
-const botonDelete = document.querySelector("#delete")
-botonDelete.onclick = ()=> localStorage.clear()
+document.querySelector("#delete").onclick = ()=> localStorage.clear()
 
 
 // Crea botón para borrar un contacto en concreto de Local Storage.
 
-
+// El botón está en un form de html en el que se pide nombre usuario:
 document.querySelector("#deleteForm").addEventListener("submit", function (event) {
     event.preventDefault();
     const user = event.target.delUser.value;
-    let arrayGuardado = JSON.parse(localStorage.getItem("Datos guardados"));
-    for (let i = 0; i < arrayGuardado.length; i++) {
-        if (arrayGuardado[i]["nombre"] === user) {
-            localStorage.removeItem(arrayGuardado[i])
+    let arrayUsers = JSON.parse(localStorage.getItem("datosGuardados"));
+    
+    for (let i = 0; i < arrayUsers.length; i++) {
+        if (arrayUsers[i]["nombre"] === user) {
+        arrayUsers.pop(arrayUsers[i])
         }
     }
+    localStorage.setItem("datosGuardados", JSON.stringify(arrayUsers))
 })
 
 
